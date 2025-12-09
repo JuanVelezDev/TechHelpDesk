@@ -1,0 +1,21 @@
+{
+    "type": "postgres",
+    "url": "process.env.DATABASE_URL",
+    "synchronize": false,
+    "logging": true,
+    "entities": [
+      "src/clients/entities/*.entity.ts",
+      "src/technicians/entities/*.entity.ts",
+      "src/tickets/entities/*.entity.ts",
+      "src/categories/entities/*.entity.ts"
+    ],
+    "migrations": [
+      "src/migrations/*.ts"
+    ],
+    "subscribers": [],
+    "extra": {
+      "connectionTimeoutMillis": 5000,
+      "idleInTransactionSessionTimeout": 10000
+    }
+  }
+  
