@@ -18,6 +18,9 @@ export class Technician {
   @Column()
   specialization: string;
 
+  @Column({ default: true })
+  availability: boolean;
+
   @OneToMany(() => Ticket, (ticket) => ticket.technician)  
   tickets: Ticket[];
 }

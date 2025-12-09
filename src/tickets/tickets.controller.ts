@@ -7,6 +7,7 @@ import { UpdateTicketDto } from 'src/tickets/dto/update-ticket-status.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { Roles } from '../common/decorators/roles.decorator';  
 import { RolesGuard } from '../common/guards/roles.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { Role } from '../common/enums/role.enum';  
 
 
@@ -21,7 +22,7 @@ export class TicketsController {
   @ApiResponse({ status: 201, description: 'Ticket creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @Roles(Role.Client)  
-  @UseGuards(RolesGuard) 
+  @UseGuards(JwtAuthGuard, RolesGuard) 
   create(@Body() dto: CreateTicketDto) {
     return this.ticketsService.create(dto);
   }
@@ -31,7 +32,7 @@ export class TicketsController {
   @ApiOperation({ summary: 'Listar todos los tickets' })
   @ApiResponse({ status: 200, description: 'Lista de tickets' })
   @Roles(Role.Admin, Role.Technician, Role.Client)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   findAll() {
     return this.ticketsService.findAll();
   }
@@ -41,7 +42,7 @@ export class TicketsController {
   @ApiOperation({ summary: 'Obtener tickets por cliente' })
   @ApiResponse({ status: 200, description: 'Lista de tickets del cliente' })
   @Roles(Role.Admin, Role.Technician, Role.Client)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   findByClient(@Param('id') id: string) {
     return this.ticketsService.findByClient(id);
   }
@@ -51,7 +52,7 @@ export class TicketsController {
   @ApiOperation({ summary: 'Obtener tickets por técnico' })
   @ApiResponse({ status: 200, description: 'Lista de tickets del técnico' })
   @Roles(Role.Admin, Role.Technician)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   findByTechnician(@Param('id') id: string) {
     return this.ticketsService.findByTechnician(id);
   }
@@ -62,7 +63,7 @@ export class TicketsController {
   @ApiResponse({ status: 200, description: 'Ticket encontrado' })
   @ApiResponse({ status: 404, description: 'Ticket no encontrado' })
   @Roles(Role.Admin, Role.Technician, Role.Client)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   findOne(@Param('id') id: string) {
     return this.ticketsService.findOne(id);
   }
@@ -73,7 +74,7 @@ export class TicketsController {
   @ApiResponse({ status: 200, description: 'Estado actualizado exitosamente' })
   @ApiResponse({ status: 400, description: 'Transición de estado inválida' })
   @Roles(Role.Admin, Role.Technician)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   updateStatus(@Param('id') id: string, @Body() dto: UpdateStatusDto) {
     return this.ticketsService.updateStatus(id, dto);
   }
@@ -83,7 +84,7 @@ export class TicketsController {
   @ApiOperation({ summary: 'Actualizar un ticket' })
   @ApiResponse({ status: 200, description: 'Ticket actualizado exitosamente' })
   @Roles(Role.Admin, Role.Technician)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   update(@Param('id') id: string, @Body() dto: UpdateTicketDto) {
     return this.ticketsService.update(id, dto);
   }
@@ -93,7 +94,7 @@ export class TicketsController {
   @ApiOperation({ summary: 'Eliminar un ticket' })
   @ApiResponse({ status: 200, description: 'Ticket eliminado exitosamente' })
   @Roles(Role.Admin)  
-  @UseGuards(RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)  
   remove(@Param('id') id: string) {
     return this.ticketsService.remove(id);
   }

@@ -1,17 +1,13 @@
 // src/common/guards/roles.guard.ts
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '../decorators/roles.decorator';  // Asegúrate de que el decorador sea correcto
-import { Role } from '../enums/role.enum';  // Enum para roles si es que tienes
+import { ROLES_KEY } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private jwtService: JwtService,  // Inyectamos JwtService para verificar el token
-  ) {}
+  constructor(private reflector: Reflector) {}
 
   canActivate(
     context: ExecutionContext,
@@ -24,20 +20,19 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization?.split(' ')[1];  // Extraemos el token de la cabecera
+    const user = request.user; // El usuario debe estar en el request gracias a JwtAuthGuard
 
-    if (!token) {
-      return false;
+    if (!user) {
+      throw new ForbiddenException('Usuario no autenticado');
     }
 
-    try {
-      const decoded = this.jwtService.verify(token);  // Verificamos el token con JwtService
-      const userRole = decoded.role;  // Extraemos el rol del token
+    const userRole = user.role;
 
-      // Comparamos el rol del usuario con los roles requeridos
-      return requiredRoles.includes(userRole);
-    } catch (error) {
-      return false;
+    // Comparamos el rol del usuario con los roles requeridos
+    if (!requiredRoles.includes(userRole)) {
+      throw new ForbiddenException('Forbidden resource');
     }
+
+    return true;
   }
 }

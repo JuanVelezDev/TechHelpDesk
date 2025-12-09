@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Testing
+coverage
+*.spec.ts
+*.test.ts
+test
+jest.config.js
+
+# Build
+dist
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Misc
+*.log
+.sql
+fix-*.js
+test-*.js
+check-*.js
+generate-*.js
+reset-*.js
+run-*.js

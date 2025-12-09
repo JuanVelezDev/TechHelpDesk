@@ -36,6 +36,9 @@ CREATE TABLE IF NOT EXISTS technicians (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(255),
+    specialization VARCHAR(255),
+    availability BOOLEAN DEFAULT true,
     user_id UUID UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
@@ -90,9 +93,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_technicians_user_id ON technicians(user_id
 -- Usuarios
 INSERT INTO users (id, name, email, password, role)
 VALUES
-  ('11111111-1111-1111-1111-111111111111', 'Admin User', 'admin@example.com', '$2b$10$rOzJqKqKqKqKqKqKqKqKqOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'admin'),
-  ('22222222-2222-2222-2222-222222222222', 'John Client', 'john.client@example.com', '$2b$10$rOzJqKqKqKqKqKqKqKqKqOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'client'),
-  ('33333333-3333-3333-3333-333333333333', 'Jane Technician', 'jane.tech@example.com', '$2b$10$rOzJqKqKqKqKqKqKqKqKqOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'technician')
+  ('11111111-1111-1111-1111-111111111111', 'Admin User', 'admin@example.com', '$2b$10$rmtbvQTd.0qb4Xj7mKxsB.rBQkjgK62ZAcZGqdk7wTmv70EIivnTu', 'admin'),
+  ('22222222-2222-2222-2222-222222222222', 'John Client', 'john.client@example.com', '$2b$10$rmtbvQTd.0qb4Xj7mKxsB.rBQkjgK62ZAcZGqdk7wTmv70EIivnTu', 'client'),
+  ('33333333-3333-3333-3333-333333333333', 'Jane Technician', 'jane.tech@example.com', '$2b$10$rmtbvQTd.0qb4Xj7mKxsB.rBQkjgK62ZAcZGqdk7wTmv70EIivnTu', 'technician')
 ON CONFLICT (id) DO NOTHING;
 
 -- Clientes
@@ -102,9 +105,9 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- Técnicos
-INSERT INTO technicians (id, name, email, user_id)
+INSERT INTO technicians (id, name, email, phone, specialization, availability, user_id)
 VALUES
-  ('55555555-5555-5555-5555-555555555555', 'Jane Technician', 'jane.tech@example.com', '33333333-3333-3333-3333-333333333333')
+  ('55555555-5555-5555-5555-555555555555', 'Jane Technician', 'jane.tech@example.com', '+1-555-0100', 'Hardware & Software', true, '33333333-3333-3333-3333-333333333333')
 ON CONFLICT (id) DO NOTHING;
 
 -- Categorías
